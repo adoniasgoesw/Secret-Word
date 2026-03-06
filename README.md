@@ -1,16 +1,130 @@
-# React + Vite
+# Secret Word
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A word-guessing game built with React. Guess the hidden word letter by letter, with hints by category. Each correct word scores 100 points; the game tracks time per round and supports letter normalization (e.g. "a" matches "ã", "c" matches "ç").
 
-Currently, two official plugins are available:
+![Secret Word](public/favicon.svg)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+## Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+| Category      | Technology |
+|--------------|------------|
+| **Framework** | React 19 |
+| **Build**     | Vite 7 |
+| **Styling**   | Tailwind CSS 4 |
+| **Icons**     | Lucide React |
+| **Language**  | JavaScript (JSX) |
+| **Deploy**    | Netlify-ready (`_redirects` for SPA) |
 
-## Expanding the ESLint configuration
+### Why These Choices?
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **React 19** – Current React with hooks for state and effects.
+- **Vite** – Fast dev server and optimized production builds.
+- **Tailwind CSS 4** – Utility-first styling with the official Vite plugin; no custom CSS, only Tailwind classes.
+- **Lucide React** – Lightweight, consistent SVG icons (no emojis in UI).
+- **LocalStorage** – Persists last score and game history (no backend).
+
+---
+
+## Project Structure
+
+```
+secretword/
+├── public/
+│   ├── favicon.svg          # App icon (W for Word)
+│   ├── _redirects           # Netlify SPA fallback (/* → /index.html 200)
+│   └── vite.svg
+├── src/
+│   ├── components/
+│   │   ├── StartScreen.jsx  # Welcome, last score, "Começar"
+│   │   ├── Game.jsx         # Main game: word, input, score, time, wrong letters
+│   │   └── GameOver.jsx     # Result, score, time, "Jogar novamente"
+│   ├── data/
+│   │   └── data.jsx         # wordsList: categories and ~800 words (PT-BR)
+│   ├── utils/
+│   │   ├── storage.js       # localStorage: scores, last score, guessed words, records
+│   │   └── letters.js       # normalizeLetter() for a/ã, c/ç matching
+│   ├── App.jsx              # State, stages (start/game/end), word pick, score logic
+│   ├── main.jsx             # React root
+│   └── index.css             # Tailwind import only
+├── index.html
+├── package.json
+├── vite.config.js            # Vite + React + Tailwind plugins
+└── README.md
+```
+
+### Main Flows
+
+- **App.jsx** – Holds game state (stage, word, letters, score, time, etc.), picks words avoiding already guessed ones, applies +100 per word and saves score on game over.
+- **Game** – Renders word slots (revealed/blank), input, Verificar button, score/time header, wrong letters; uses `normalizeLetter` so typing "a" reveals "ã" in words like "mamão".
+- **storage.js** – Saves/loads last score, score history (per-game points + time), and guessed words so the same word is not repeated in a run.
+
+---
+
+## Development
+
+### Prerequisites
+
+- Node.js (recommended: 18+)
+- npm (or yarn/pnpm)
+
+### Install
+
+```bash
+npm install
+```
+
+### Run locally
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:5173](http://localhost:5173) (or the URL shown in the terminal).
+
+### Build
+
+```bash
+npm run build
+```
+
+Output is in `dist/`. Preview the production build:
+
+```bash
+npm run preview
+```
+
+### Lint
+
+```bash
+npm run lint
+```
+
+---
+
+## Game Rules (short)
+
+- You have **5 attempts** per word.
+- Guess one letter at a time; correct letters appear in place.
+- **+100 points** per word guessed.
+- Letters are normalized: e.g. "a" matches "ã", "c" matches "ç".
+- Time is shown per word and for the full game; last score is kept in localStorage.
+
+---
+
+## Deployment (e.g. Netlify)
+
+- Build command: `npm run build`
+- Publish directory: `dist`
+- `public/_redirects` is copied into `dist` by Vite, so Netlify serves `index.html` for all routes (SPA).
+
+---
+
+## License
+
+MIT (or your chosen license).
+
+---
+
+If you found this useful or fun, consider giving it a star ⭐ — it helps a lot!
