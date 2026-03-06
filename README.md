@@ -121,10 +121,4 @@ npm run lint
 
 ---
 
-## License
-
-MIT (or your chosen license).
-
----
-
 If you found this useful or fun, consider giving it a star ⭐ — it helps a lot!
