@@ -2,7 +2,7 @@
 
 A word-guessing game built with React. Guess the hidden word letter by letter, with hints by category. Each correct word scores 100 points; the game tracks time per round and supports letter normalization (e.g. "a" matches "ã", "c" matches "ç").
 
-![Secret Word](public/favicon.svg)
+
 
 ---
 
